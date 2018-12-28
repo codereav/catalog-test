@@ -1,0 +1,26 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: codereav
+ * Date: 27.12.2018
+ * Time: 14:19
+ */
+$routes = require APP_PATH . DS . 'routes.php';
+
+return [
+    'routes' => $routes,
+    'mysql' => [
+        'driver' => 'mysql',
+        'host' => '127.0.0.1',
+        'port' => '3306',
+        'database' => 'neoflex-test',
+        'username' => 'root',
+        'password' => '',
+        'unix_socket' => '',
+        'charset' => 'utf8mb4',
+        'collation' => 'utf8mb4_unicode_ci',
+        'prefix' => '',
+        'strict' => false,
+        'engine' => null,
+    ]
+];
