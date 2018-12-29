@@ -1,5 +1,5 @@
 # catalog-test
-This is a project implemented as test task for the "Neoflex" company
+This is a project implemented as test task for the IT company
 
 ## requirements
 ● PHP>=7.1
@@ -14,7 +14,7 @@ This is a project implemented as test task for the "Neoflex" company
 
 ● Rename /app/config.php.example to /app/config.php then write your config
 
-● Upload neoflex-test.sql(db-dump - structure + data) - don`t create DB in advance - it will be created with dump uploading.
+● Upload catalog-test.sql(db-dump - structure + data) - don`t create DB in advance - it will be created with dump uploading.
 
 
 

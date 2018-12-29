@@ -19,10 +19,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `neoflex-test`
+-- База данных: `catalog-test`
 --
-CREATE DATABASE IF NOT EXISTS `neoflex-test` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `neoflex-test`;
+CREATE DATABASE IF NOT EXISTS `catalog-test` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `catalog-test`;
 
 -- --------------------------------------------------------
 
