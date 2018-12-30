@@ -9,6 +9,7 @@ $routes = require APP_PATH . DS . 'routes.php';
 
 return [
     'routes' => $routes,
+    'baseUrl' =>'http://catalog-test.lc',
     'mysql' => [
         'driver' => 'mysql',
         'host' => '127.0.0.1',

@@ -1,0 +1,80 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+input {
+    height: 20px;
+}
+
+input, textarea, select {
+    margin: 5px;
+    padding: 5px;
+}
+
+.wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 10px;
+    clear: both;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.col-6 {
+    width: 50%;
+    float: left;
+}
+
+.col-12 {
+    width: 100%;
+    float: left;
+}
+
+input#articleTitle {
+    width: 100%;
+}
+
+textarea#articleText {
+    width: 100%;
+    min-height: 100px;
+}
+
+.fio-group input {
+    float: left;
+    margin: 5px 0;
+}
+
+select#rubricSelect {
+    width: 95%;
+}
+
+button#articleFormSubmit {
+    border: 1px solid lightblue;
+    background: lightblue;
+    margin: 5px;
+    padding: 10px;
+    width: 60%;
+}
+button#articleFormSubmit:hover {
+    background: lightgreen;
+}
+
+button#articleFormSubmit:active {
+    background: darkseagreen;
+}
+
+ul#rubricsLinks li {
+    line-height: 25px;
+}
+
+div.articles-list-one-block {
+    border: 1px solid gray;
+    margin: 10px auto;
+}

@@ -12,16 +12,38 @@ class Application
 {
     private $config;
     private $router;
+    private static $instance;
+    protected $db;
 
-    public function __construct(array $config, Router $router)
+    public function __construct(array $config = [], Router $router = null, Database $db = null)
     {
-        $this->config = $config;
-        $this->router = $router;
+        if (self::$instance === null) {
+            $this->config = $config;
+            $this->router = $router;
+            $this->db = $db;
+
+            self::$instance = $this;
+        }
     }
 
     public function run(): void
     {
         $this->router->addRoutes($this->config['routes']);
         $this->router->dispatch();
+    }
+
+    public static function getInstance(): Application
+    {
+        return self::$instance;
+    }
+
+    public function getDb(): Database
+    {
+        return $this->db;
+    }
+
+    public function getConfig(): array
+    {
+        return $this->config;
     }
 }

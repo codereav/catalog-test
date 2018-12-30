@@ -67,6 +67,6 @@ class Router
         $controller = 'App\Controllers\\' . ($this->params[0] ?? 'IndexController');
         $action = $this->params[1] ?? 'indexAction';
         $params = array_slice($this->params, 2);
-        return call_user_func_array([$controller, $action], $params);
+        return (new $controller())->$action($params);
     }
 }

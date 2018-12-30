@@ -11,15 +11,18 @@ namespace App\Components;
 class Database
 {
     private $instance;
+    private $dbConfig;
 
-    public function connect(array $dbConfig): void
+    public function __construct(array $dbConfig)
     {
+        $this->dbConfig = $dbConfig;
         $db = new \PDO(
             $dbConfig['driver'] . ':host=' . $dbConfig['host'] . ';' .
             'port=' . $dbConfig['port'] . ';' .
             'dbname=' . $dbConfig['database'],
             $dbConfig['username'],
-            $dbConfig['password']
+            $dbConfig['password'],
+            [\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC]
         );
         if ($db) {
             $this->instance = $db;

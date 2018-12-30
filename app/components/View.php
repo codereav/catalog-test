@@ -10,18 +10,41 @@ namespace App\Components;
 
 class View
 {
+    private const TEMPLATE_PATH = 'views';
     private $folder;
+    private $parts = [];
+    private $baseUrl;
 
-    public function __construct($folder = null)
+    public function __construct()
     {
-        if ($folder !== null) {
-            $this->folder = $folder;
+        $this->baseUrl = Application::getInstance()->getConfig()['baseUrl'];
+    }
+
+    public function render(array $data): void
+    {
+        foreach ($this->parts as $part) {
+            echo $this->renderPart($part, $data);
         }
     }
 
-    public function render($template)
+    public function addPart(string $partname): void
     {
-        //TODO: implement render method
+        $this->parts[] = APP_PATH . DS . self::TEMPLATE_PATH . DS . ($this->folder ? (DS . $this->folder . DS) : '') . $partname . '.view.php';
     }
 
+    protected function renderPart(string $filepath, array $data): string
+    {
+        if (file_exists($filepath)) {
+            extract($data, EXTR_OVERWRITE);
+            ob_start();
+            require $filepath;
+        }
+        return ob_get_clean();
+
+    }
+
+    public function getBaseUrl(): string
+    {
+        return $this->baseUrl;
+    }
 }
