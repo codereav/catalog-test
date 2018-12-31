@@ -8,24 +8,14 @@
 
 namespace App\Components;
 
+use App\Contracts\ModelInterface;
+
 abstract class AbstractRepository
 {
     protected $db;
-    protected $data = [];
 
     public function __construct()
     {
         $this->db = Application::getInstance()->getDb()->getInstance();
     }
-
-    public function getAll(): array
-    {
-        return $this->data;
-    }
-
-    public function getOne(): array
-    {
-        return reset($this->data);
-    }
-
 }

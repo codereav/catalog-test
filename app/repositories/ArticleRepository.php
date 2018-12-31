@@ -13,16 +13,20 @@ use App\Models\ArticleModel;
 
 class ArticleRepository extends AbstractRepository
 {
-    private $model;
-
-    public function __construct(ArticleModel $model)
+    private function buildData(array $data, ArticleModel $model): ArticleModel
     {
-        parent::__construct();
-        $this->model = $model;
+        $model->setId($data['id'] ?? $model->getId());
+        $model->setTitle($data['title'] ?? $model->getTitle());
+        $model->setAuthorId($data['author_id'] ?? $model->getAuthorId());
+        $model->setAuthorName($data['authorName'] ?? $model->getAuthorName());
+        $model->setContent($data['content'] ?? $model->getContent());
+
+        return $model;
     }
 
-    public function findArticles(): void
+    public function getArticles(): array
     {
+        $res = [];
         $query = 'SELECT ' .
             'a.`id`, ' .
             ' a.`title`, ' .
@@ -34,11 +38,14 @@ class ArticleRepository extends AbstractRepository
 
         $result = $this->db->query($query);
         if ($rows = $result->fetchAll()) {
-            $this->data = $rows;
+            foreach ($rows as $rawData) {
+                $res[] = $this->buildData($rawData, new ArticleModel());
+            }
         }
+        return $res;
     }
 
-    public function findArticleByRubricId(): void
+    public function getArticleByRubricId(int $rubricId): ?ArticleModel
     {
         $query = 'SELECT ' .
             'a.`id`, ' .
@@ -49,15 +56,16 @@ class ArticleRepository extends AbstractRepository
             'FROM `article` a ' .
             'LEFT JOIN `author` b ON a.`author_id`=b.`id` ' .
             'LEFT JOIN `article_rubric` c ON c.`article_id`=a.`id` ' .
-            'WHERE c.`rubric_id`=' . $this->model->getRubricId();
+            'WHERE c.`rubric_id`=' . $rubricId;
 
         $result = $this->db->query($query);
-        if ($rows = $result->fetchAll()) {
-            $this->data = $rows;
+        if ($row = $result->fetch()) {
+            return $this->buildData($row, new ArticleModel());
         }
+        return null;
     }
 
-    public function findArticleById(): void
+    public function getArticleById(int $id): ?ArticleModel
     {
         $query = 'SELECT ' .
             'a.`id`, ' .
@@ -67,11 +75,12 @@ class ArticleRepository extends AbstractRepository
             ' CONCAT(b.`lastname`, \' \', b.`firstname`, \' \', b.`middlename`) as author_name ' .
             'FROM `article` a ' .
             'LEFT JOIN `author` b ON a.`author_id`=b.`id` ' .
-            'WHERE a.`id`=' . $this->model->getId();
+            'WHERE a.`id`=' . $id;
 
         $result = $this->db->query($query);
-        if ($rows = $result->fetchAll()) {
-            $this->data = $rows;
+        if ($row = $result->fetch()) {
+            return $this->buildData($row, new ArticleModel());
         }
+        return null;
     }
 }

@@ -32,6 +32,10 @@ class ArticleModel implements ModelInterface
      * @var int
      */
     private $rubricId;
+    /**
+     * @var string
+     */
+    private $authorName;
 
     /**
      * @return int
@@ -114,11 +118,28 @@ class ArticleModel implements ModelInterface
     }
 
     /**
+     * @return string
+     */
+    public function getAuthorName(): ?string
+    {
+        return $this->authorName;
+    }
+
+    /**
+     * @param string $authorName
+     */
+    public function setAuthorName(?string $authorName): void
+    {
+        $this->authorName = $authorName;
+    }
+
+    /**
      * @return bool
      */
     public function validate(): bool
     {
         // TODO: Implement validate() method.
+        return true;
     }
 
 }
