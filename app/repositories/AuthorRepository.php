@@ -23,7 +23,7 @@ class AuthorRepository extends AbstractRepository
         return $model;
     }
 
-    public function isAuthorExists(string $lastname, string $firstname, string $middlename): bool
+    public function isAuthorExists(string $lastname = '', string $firstname = '', string $middlename = ''): bool
     {
         $query = 'SELECT 1 from `author` a ' .
             'WHERE a.`lastname`="' . $lastname . '"' .
@@ -36,7 +36,7 @@ class AuthorRepository extends AbstractRepository
         return false;
     }
 
-    public function findAuthorById(int $id): ?AuthorModel
+    public function getAuthorById(int $id): ?AuthorModel
     {
         $query = 'SELECT ' .
             'a.`id`, ' .

@@ -5,8 +5,20 @@ html, body {
 
 input {
     height: 20px;
+    border: 1px solid;
 }
 
+.error {
+    color: red;
+    display: block;
+}
+
+input.error, textarea.error, select.error {
+    border: 1px solid red;
+}
+input.valid, textarea.valid, select.valid {
+    border: 1px solid green;
+}
 input, textarea, select {
     margin: 5px;
     padding: 5px;
