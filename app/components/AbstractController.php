@@ -21,4 +21,12 @@ abstract class AbstractController
         $this->data['baseUrl'] = $this->view->getBaseUrl();
         $this->data['title'] = '';
     }
+
+    public function getSafeString(string $string = '') {
+        return strip_tags(stripslashes($string));
+    }
+
+    public function getSafeHtml(string $html = '') {
+        return htmlentities(htmlspecialchars($html));
+    }
 }

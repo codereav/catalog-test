@@ -120,7 +120,7 @@ class ArticleModel implements ModelInterface
     /**
      * @return string
      */
-    public function getAuthorName(): ?string
+    public function getAuthorName(): string
     {
         return $this->authorName;
     }
@@ -128,7 +128,7 @@ class ArticleModel implements ModelInterface
     /**
      * @param string $authorName
      */
-    public function setAuthorName(?string $authorName): void
+    public function setAuthorName(string $authorName): void
     {
         $this->authorName = $authorName;
     }

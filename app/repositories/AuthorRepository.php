@@ -25,11 +25,12 @@ class AuthorRepository extends AbstractRepository
 
     public function isAuthorExists(string $lastname = '', string $firstname = '', string $middlename = ''): bool
     {
-        $query = 'SELECT 1 from `author` a ' .
-            'WHERE a.`lastname`="' . $lastname . '"' .
-            ' AND a.`firstname` = "' . $firstname . '"' .
-            ' AND a.`middlename` = "' . $middlename . '"';
-        $result = $this->db->query($query);
+        $query = 'SELECT 1 from `author` a' .
+            ' WHERE a.`lastname` = ":lastname"' .
+            ' AND a.`firstname` = ":firstname"' .
+            ' AND a.`middlename` = ":middlename"';
+        $result = $this->db->prepare($query);
+        $result->execute([':lastname' => $lastname, ':firstname' => $firstname, ':middlename' => $middlename]);
         if ($result->rowCount()) {
             return true;
         }
@@ -44,9 +45,10 @@ class AuthorRepository extends AbstractRepository
             'a.`firstname`, ' .
             'a.`middlename` ' .
             'FROM `author` a ' .
-            'WHERE a.`id`=' . $id;
+            'WHERE a.`id`=:id';
 
-        $result = $this->db->query($query);
+        $result = $this->db->prepare($query);
+        $result->execute([':id' => $id]);
         if ($row = $result->fetch()) {
             return $this->buildData($row, new AuthorModel());
         }

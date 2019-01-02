@@ -17,11 +17,9 @@ class IndexController extends AbstractController
 {
     public function indexAction(): void
     {
-        $articleRepository = new ArticleRepository();
-        $rubricRepository = new RubricRepository();
+        $this->data['articles'] = (new ArticleRepository())->getArticles();
+        $this->data['rubrics'] = (new RubricRepository())->getRubrics();
 
-        $this->data['articles'] = $articleRepository->getArticles();
-        $this->data['rubrics'] = $rubricRepository->getRubrics();
         $this->view->addPart('common' . DS . 'header');
         $this->view->addPart('form');
         $this->view->addPart('rubrics-links');
@@ -32,6 +30,11 @@ class IndexController extends AbstractController
 
     public function articleViewAction(int $id): void
     {
-        //echo 'SHOW ARTICLE ' . $id;
+        $this->data['article'] = (new ArticleRepository())->getArticleById($id);
+
+        $this->view->addPart('common' . DS . 'header');
+        $this->view->addPart('article');
+        $this->view->addPart('common' . DS . 'footer');
+        $this->view->render($this->data);
     }
 }

@@ -35,6 +35,14 @@ input, textarea, select {
     clear: both;
 }
 
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
 .text-center {
     text-align: center;
 }
