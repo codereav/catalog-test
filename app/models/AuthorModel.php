@@ -32,7 +32,7 @@ class AuthorModel implements ModelInterface
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -40,7 +40,7 @@ class AuthorModel implements ModelInterface
     /**
      * @param int $id
      */
-    public function setId(int $id): void
+    public function setId(?int $id): void
     {
         $this->id = $id;
     }
@@ -48,7 +48,7 @@ class AuthorModel implements ModelInterface
     /**
      * @return string
      */
-    public function getFirstname(): string
+    public function getFirstname(): ?string
     {
         return $this->firstname;
     }
@@ -56,7 +56,7 @@ class AuthorModel implements ModelInterface
     /**
      * @param string $firstname
      */
-    public function setFirstname(string $firstname): void
+    public function setFirstname(?string $firstname): void
     {
         $this->firstname = $firstname;
     }
@@ -64,7 +64,7 @@ class AuthorModel implements ModelInterface
     /**
      * @return string
      */
-    public function getMiddlename(): string
+    public function getMiddlename(): ?string
     {
         return $this->middlename;
     }
@@ -72,7 +72,7 @@ class AuthorModel implements ModelInterface
     /**
      * @param string $middlename
      */
-    public function setMiddlename(string $middlename): void
+    public function setMiddlename(?string $middlename): void
     {
         $this->middlename = $middlename;
     }
@@ -80,7 +80,7 @@ class AuthorModel implements ModelInterface
     /**
      * @return string
      */
-    public function getLastname(): string
+    public function getLastname(): ?string
     {
         return $this->lastname;
     }
@@ -88,7 +88,7 @@ class AuthorModel implements ModelInterface
     /**
      * @param string $lastname
      */
-    public function setLastname(string $lastname): void
+    public function setLastname(?string $lastname): void
     {
         $this->lastname = $lastname;
     }

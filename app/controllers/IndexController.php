@@ -17,8 +17,13 @@ class IndexController extends AbstractController
 {
     public function indexAction(): void
     {
+        $rubricRepository = new RubricRepository();
+
+        $this->data['rubrics'] = $rubricRepository->getRubrics();
         $this->data['articles'] = (new ArticleRepository())->getArticles();
-        $this->data['rubrics'] = (new RubricRepository())->getRubrics();
+
+        $rubricTreeArray = $rubricRepository->buildTreeArray($this->data['rubrics']);
+        $this->data['rubricsUlHtml'] = $rubricRepository->getTreeHtml($rubricTreeArray);
 
         $this->view->addPart('common' . DS . 'header');
         $this->view->addPart('form');

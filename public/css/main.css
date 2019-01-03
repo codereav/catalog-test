@@ -3,6 +3,10 @@ html, body {
     padding: 0;
 }
 
+h4 {
+    display: inline;
+}
+
 input {
     height: 20px;
     border: 1px solid;
@@ -13,12 +17,25 @@ input {
     display: block;
 }
 
+.success {
+    color: green;
+    display: block;
+}
+
+#form-success {
+    display: none;
+    background: #dcffe3;
+    position: fixed;
+}
+
 input.error, textarea.error, select.error {
     border: 1px solid red;
 }
+
 input.valid, textarea.valid, select.valid {
     border: 1px solid green;
 }
+
 input, textarea, select {
     margin: 5px;
     padding: 5px;
@@ -47,6 +64,10 @@ input, textarea, select {
     text-align: center;
 }
 
+.pull-right {
+    float: right;
+}
+
 .col-6 {
     width: 50%;
     float: left;
@@ -68,25 +89,32 @@ textarea#articleText {
 
 .fio-group input {
     float: left;
-    margin: 5px 0;
-}
-
-select#rubricSelect {
-    width: 95%;
+    margin: 5px 2px;
 }
 
 button#articleFormSubmit {
+    width: calc(100% - 7px);
+    margin-left: 0px;
+}
+
+select#rubricSelect {
+    width: calc(100% - 7px);
+    margin-left: 0px;
+}
+
+button {
     border: 1px solid lightblue;
     background: lightblue;
     margin: 5px;
     padding: 10px;
-    width: 60%;
+    cursor: pointer;
 }
-button#articleFormSubmit:hover {
+
+button:hover {
     background: lightgreen;
 }
 
-button#articleFormSubmit:active {
+button:active {
     background: darkseagreen;
 }
 

@@ -1,4 +1,8 @@
 jQuery(document).ready(function ($) {
+    $.validator.addMethod("lettersonly", function (value, element) {
+        return this.optional(element) || /^[a-z,а-я\s]+$/i.test(value);
+    }, "Только буквы и пробелы!");
+
     $('#articleForm').validate({
         onclick: false,
         onblur: false,
@@ -6,31 +10,97 @@ jQuery(document).ready(function ($) {
         rules: {
             title: 'required',
             content: 'required',
-            lastname: 'required',
-            firstname: 'required',
-            middlename: 'required',
-            rubric: 'required'
+            lastname: {required: true, lettersonly: true},
+            firstname: {required: true, lettersonly: true},
+            middlename: {required: true, lettersonly: true},
+            rubric_id: 'required'
         },
         messages: {
-            rubric: "Выберите рубрику!"
+            rubric_id: "Выберите рубрику!"
         },
         onkeyup: function (element) {
-            validate(element);
+            validate($(element).closest('form'));
+        }
+    });
+
+    $('#articleForm').submit(function (e) {
+        e.preventDefault();
+        if ($(this).validate().checkForm()) {
+            $.ajax({
+                url: '/article/add',
+                type: 'POST',
+                dataType: 'json',
+                data: $(this).serialize(),
+                success: function (data) {
+                    if (data.errors.length > 0) {
+                        $.each(data.errors, function (i, val) {
+                            $('#form-errors').html('');
+                            $('#form-errors').append('<div class="error">' + val + '</div>');
+                        });
+                        quicklyShow($('#form-errors'));
+                    } else {
+                        $('#articleForm').find('input[type=text], textarea, select').val('');
+                        validate($('#articleForm'));
+                        $('#form-success').html('');
+                        $('#form-success').append('<div class="success">Статья успешно добавлена!</div>');
+                        quicklyShow($('#form-success'));
+                        if (data.html.length > 0) {
+                            $('#articlesContainer').prepend(data.html);
+                            $('html, body').animate({
+                                scrollTop: $("#articlesListHeader").offset().top
+                            }, 2000);
+                        }
+                    }
+                }
+            });
         }
     });
 
     $('#articleForm select').change(function () {
-        validate(this);
+        validate($(this).closest('form'));
     });
 
-    function validate(element) {
+    $('#rubricsLinks a').click(function (e) {
+        e.preventDefault();
+        var rubricId = $(this).data('rubric_id');
+        $.ajax({
+            url: '/rubric/'+rubricId,
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                if (data.errors.length > 0) {
+                    $.each(data.errors, function (i, val) {
+                        $('#form-errors').html('');
+                        $('#form-errors').append('<div class="error">' + val + '</div>');
+                    });
+                    quicklyShow($('#form-errors'));
+                } else {
+                    $('#articlesList_rubricTitle').text(': '+data.rubricTitle);
+                    $('#articlesContainer').html('');
+                    if (data.html.length > 0) {
+                        $('#articlesContainer').replaceWith(data.html);
+                        $('html, body').animate({
+                            scrollTop: $("#articlesListHeader").offset().top
+                        }, 2000);
+                    }
+                }
+            }
+        });
+    });
+
+    function validate(form) {
         if (event.key !== 'Tab') {
-            $(element).valid();
-            if ($(element).closest('form').validate().checkForm()) {
+            if ($(form).validate().checkForm()) {
                 $('#articleFormSubmit').show();
             } else {
                 $('#articleFormSubmit').hide();
             }
         }
+    }
+
+    function quicklyShow(element) {
+        $(element).slideDown();
+        $(element).delay(5000);
+        $(element).slideUp();
     }
 });

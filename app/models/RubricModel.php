@@ -26,9 +26,14 @@ class RubricModel implements ModelInterface
     protected $title;
 
     /**
+     * @var array
+     */
+    protected $children;
+
+    /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -36,7 +41,7 @@ class RubricModel implements ModelInterface
     /**
      * @param int $id
      */
-    public function setId(int $id): void
+    public function setId(?int $id): void
     {
         $this->id = $id;
     }
@@ -44,7 +49,7 @@ class RubricModel implements ModelInterface
     /**
      * @return int
      */
-    public function getParentId(): int
+    public function getParentId(): ?int
     {
         return $this->parentId;
     }
@@ -52,7 +57,7 @@ class RubricModel implements ModelInterface
     /**
      * @param int $parentId
      */
-    public function setParentId(int $parentId): void
+    public function setParentId(?int $parentId): void
     {
         $this->parentId = $parentId;
     }
@@ -60,7 +65,7 @@ class RubricModel implements ModelInterface
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -68,9 +73,25 @@ class RubricModel implements ModelInterface
     /**
      * @param string $title
      */
-    public function setTitle(string $title): void
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
+    }
+
+    /**
+     * @return array
+     */
+    public function getChildren(): ?array
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param array $children
+     */
+    public function setChildren(?array $children): void
+    {
+        $this->children = $children;
     }
 
     /**

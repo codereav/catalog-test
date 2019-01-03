@@ -1,5 +1,11 @@
 <?php
 
+session_start();
+
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('BASE_PATH') or define('BASE_PATH', __DIR__ . DS . '..');
 defined('APP_PATH') or define('APP_PATH', __DIR__ . DS . '..' . DS . 'app');

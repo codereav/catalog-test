@@ -13,20 +13,20 @@ use App\Components\View;
 abstract class AbstractController
 {
     protected $view;
+    protected $request;
     protected $data = [];
+    protected $token;
 
     public function __construct()
     {
         $this->view = new View();
+        $this->request = new Request();
+        if ($this->request->session('csrf_token')) {
+            $this->token = $this->request->session('csrf_token');
+        }
         $this->data['baseUrl'] = $this->view->getBaseUrl();
         $this->data['title'] = '';
-    }
+        $this->data['token'] = $this->token;
 
-    public function getSafeString(string $string = '') {
-        return strip_tags(stripslashes($string));
-    }
-
-    public function getSafeHtml(string $html = '') {
-        return htmlentities(htmlspecialchars($html));
     }
 }

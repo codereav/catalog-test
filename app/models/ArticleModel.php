@@ -40,7 +40,7 @@ class ArticleModel implements ModelInterface
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -48,7 +48,7 @@ class ArticleModel implements ModelInterface
     /**
      * @param int $id
      */
-    public function setId(int $id): void
+    public function setId(?int $id): void
     {
         $this->id = $id;
     }
@@ -56,7 +56,7 @@ class ArticleModel implements ModelInterface
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -64,7 +64,7 @@ class ArticleModel implements ModelInterface
     /**
      * @param string $title
      */
-    public function setTitle(string $title): void
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
@@ -72,7 +72,7 @@ class ArticleModel implements ModelInterface
     /**
      * @return string
      */
-    public function getContent(): string
+    public function getContent(): ?string
     {
         return $this->content;
     }
@@ -80,7 +80,7 @@ class ArticleModel implements ModelInterface
     /**
      * @param string $content
      */
-    public function setContent(string $content): void
+    public function setContent(?string $content): void
     {
         $this->content = $content;
     }
@@ -88,7 +88,7 @@ class ArticleModel implements ModelInterface
     /**
      * @return int
      */
-    public function getAuthorId(): int
+    public function getAuthorId(): ?int
     {
         return $this->authorId;
     }
@@ -96,7 +96,7 @@ class ArticleModel implements ModelInterface
     /**
      * @param int $authorId
      */
-    public function setAuthorId(int $authorId): void
+    public function setAuthorId(?int $authorId): void
     {
         $this->authorId = $authorId;
     }
@@ -104,7 +104,7 @@ class ArticleModel implements ModelInterface
     /**
      * @return int
      */
-    public function getRubricId(): int
+    public function getRubricId(): ?int
     {
         return $this->rubricId;
     }
@@ -112,7 +112,7 @@ class ArticleModel implements ModelInterface
     /**
      * @param int $rubricId
      */
-    public function setRubricId(int $rubricId): void
+    public function setRubricId(?int $rubricId): void
     {
         $this->rubricId = $rubricId;
     }
@@ -120,7 +120,7 @@ class ArticleModel implements ModelInterface
     /**
      * @return string
      */
-    public function getAuthorName(): string
+    public function getAuthorName(): ?string
     {
         return $this->authorName;
     }
@@ -128,7 +128,7 @@ class ArticleModel implements ModelInterface
     /**
      * @param string $authorName
      */
-    public function setAuthorName(string $authorName): void
+    public function setAuthorName(?string $authorName): void
     {
         $this->authorName = $authorName;
     }
@@ -138,8 +138,7 @@ class ArticleModel implements ModelInterface
      */
     public function validate(): bool
     {
-        // TODO: Implement validate() method.
-        return true;
+        return $this->getTitle() && $this->getContent() && $this->getAuthorId() && $this->getRubricId();
     }
 
 }

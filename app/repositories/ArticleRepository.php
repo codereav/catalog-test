@@ -13,6 +13,7 @@ use App\Models\ArticleModel;
 
 class ArticleRepository extends AbstractRepository
 {
+
     private function buildData(array $data, ArticleModel $model): ArticleModel
     {
         $model->setId($data['id'] ?? $model->getId());
@@ -34,19 +35,22 @@ class ArticleRepository extends AbstractRepository
             ' a.`author_id`, ' .
             ' CONCAT(b.`lastname`, \' \', b.`firstname`, \' \', b.`middlename`) as author_name ' .
             'FROM `article` a ' .
-            'LEFT JOIN `author` b ON a.`author_id`=b.`id` ';
+            'LEFT JOIN `author` b ON a.`author_id`=b.`id` ORDER BY a.`id` DESC';
 
         $result = $this->db->query($query);
         if ($rows = $result->fetchAll()) {
             foreach ($rows as $rawData) {
+                $rawData['content'] = mb_strimwidth($rawData['content'], 0, 200) . '...';
                 $res[] = $this->buildData($rawData, new ArticleModel());
             }
         }
         return $res;
     }
 
-    public function getArticleByRubricId(int $rubricId): ?ArticleModel
+    public function getArticlesByRubricId(int $rubricId): array
     {
+        $res = [];
+        $rubricRepository = new RubricRepository();
         $query = 'SELECT ' .
             'a.`id`, ' .
             ' a.`title`, ' .
@@ -60,11 +64,19 @@ class ArticleRepository extends AbstractRepository
 
         $result = $this->db->prepare($query);
         $result->execute([':rubric_id' => $rubricId]);
-        if ($row = $result->fetch()) {
-            return $this->buildData($row, new ArticleModel());
+        if ($rows = $result->fetchAll()) {
+            foreach ($rows as $rawData) {
+                $rawData['children'] = [];
+                //while ($rubricRepository->hasChildRubric($rawData['id'])) {
+                 //   $rawData['children'] = $this->getArticlesByRubricId($rawData['id']);
+               // }
+                $rawData['content'] = mb_strimwidth($rawData['content'], 0, 200) . '...';
+                $res[] = $this->buildData($rawData, new ArticleModel());
+            }
         }
-        return null;
+        return $res;
     }
+
 
     public function getArticleById(int $id): ?ArticleModel
     {
@@ -86,18 +98,38 @@ class ArticleRepository extends AbstractRepository
         return null;
     }
 
-    public function add(ArticleModel $model): bool
+    public function save(ArticleModel $model): bool
+    {
+        if (!$model->getId()) {
+            return $this->add($model);
+        } else {
+
+            //Here can call call update method
+            return false;
+        }
+    }
+
+    private function add(ArticleModel $model): bool
     {
         if ($model->validate()) {
-            $query = 'INSERT INTO `article` a' .
-                '(a.`title`, a.`content`, a.`author_id`)' .
-                'VALUES(":title",":content",":author_id")';
+            $query = 'INSERT INTO `article`' .
+                '(`title`, `content`, `author_id`)' .
+                'VALUES(:title,:content,:author_id)';
             $result = $this->db->prepare($query);
-            return $result->execute([
+            if ($result->execute([
                 ':title' => $model->getTitle(),
                 ':content' => $model->getContent(),
                 ':author_id' => $model->getAuthorId()
-            ]);
+            ])) {
+                $this->lastInsertId = $this->db->lastInsertId();
+               $query = 'INSERT INTO `article_rubric` (`article_id`,`rubric_id`) ' .
+               'VALUES(:article_id, :rubric_id)';
+               $result = $this->db->prepare($query);
+               return $result->execute([
+                   ':article_id' => $this->getLastInsertId(),
+                   ':rubric_id' => $model->getRubricId()
+               ]);
+            }
         }
         return false;
     }

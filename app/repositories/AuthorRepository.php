@@ -26,15 +26,29 @@ class AuthorRepository extends AbstractRepository
     public function isAuthorExists(string $lastname = '', string $firstname = '', string $middlename = ''): bool
     {
         $query = 'SELECT 1 from `author` a' .
-            ' WHERE a.`lastname` = ":lastname"' .
-            ' AND a.`firstname` = ":firstname"' .
-            ' AND a.`middlename` = ":middlename"';
+            ' WHERE a.`lastname` = :lastname' .
+            ' AND a.`firstname` = :firstname' .
+            ' AND a.`middlename` = :middlename';
         $result = $this->db->prepare($query);
         $result->execute([':lastname' => $lastname, ':firstname' => $firstname, ':middlename' => $middlename]);
         if ($result->rowCount()) {
             return true;
         }
         return false;
+    }
+
+    public function getByFIO(string $lastname = '', string $firstname = '', string $middlename = ''): ?AuthorModel
+    {
+        $query = 'SELECT a.`id`, a.`lastname`, a.`firstname`, a.`middlename` from `author` a' .
+            ' WHERE a.`lastname` = :lastname' .
+            ' AND a.`firstname` = :firstname' .
+            ' AND a.`middlename` = :middlename';
+        $result = $this->db->prepare($query);
+        $result->execute([':lastname' => $lastname, ':firstname' => $firstname, ':middlename' => $middlename]);
+        if ($row = $result->fetch()) {
+            return $this->buildData($row, new AuthorModel());
+        }
+        return null;
     }
 
     public function getAuthorById(int $id): ?AuthorModel
@@ -53,5 +67,33 @@ class AuthorRepository extends AbstractRepository
             return $this->buildData($row, new AuthorModel());
         }
         return null;
+    }
+
+    public function save(AuthorModel $model): bool
+    {
+        if (!$model->getId()) {
+            return $this->add($model);
+        } else {
+
+            //Here can call call update method
+            return false;
+        }
+    }
+
+    private function add(AuthorModel $model): bool
+    {
+        if ($model->validate()) {
+            $query = 'INSERT INTO `author`' .
+                '(`lastname`, `firstname`, `middlename`)' .
+                ' VALUES(:lastname,:firstname,:middlename)';
+
+            $result = $this->db->prepare($query);
+            return $result->execute([
+                ':lastname' => $model->getLastname(),
+                ':firstname' => $model->getFirstname(),
+                ':middlename' => $model->getMiddlename()
+            ]);
+        }
+        return false;
     }
 }

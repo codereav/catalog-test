@@ -4,6 +4,11 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script type="text/javascript" src="<?= $baseUrl; ?>/js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript">
+            $.ajaxSetup({
+                data: {token: '<?= $token; ?>'}
+            });
+        </script>
         <script type="text/javascript" src="<?= $baseUrl; ?>/js/main.js"></script>
         <script type="text/javascript" src="<?= $baseUrl; ?>/js/jquery.validate.min.js"></script>
         <script type="text/javascript" src="<?= $baseUrl; ?>/js/messages_ru.js"></script>

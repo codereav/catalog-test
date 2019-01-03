@@ -8,5 +8,7 @@
 
 return [
     '/' => 'IndexController/indexAction',
-    '/article/::num' => 'IndexController/articleViewAction/$1'
+    '/article/::num' => 'IndexController/articleViewAction/$1',
+    '/article/add' => 'AjaxController/articleAddAjaxAction',
+    '/rubric/::num' =>'AjaxController/getArticlesByRubricIdAjaxAction/$1',
 ];

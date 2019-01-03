@@ -20,10 +20,22 @@ class View
         $this->baseUrl = Application::getInstance()->getConfig()['baseUrl'];
     }
 
-    public function render(array $data): void
+    public function render(array $data, bool $ajax = false)
     {
+        if ($ajax) {
+            $result = '';
+        }
         foreach ($this->parts as $part) {
-            echo $this->renderPart($part, $data);
+            if ($ajax) {
+                $data['ajax'] = 1;
+                $result .= $this->renderPart($part, $data);
+            } else {
+                $data['ajax'] = 0;
+                echo $this->renderPart($part, $data);
+            }
+        }
+        if ($ajax) {
+            return $result;
         }
     }
 
