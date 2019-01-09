@@ -49,7 +49,7 @@ class ArticleRepository extends AbstractRepository
 
     public function getArticlesByRubricId(int $rubricId, bool $withChildren = true): array
     {
-        $res = [];
+        static $res = [];
         $rubricRepository = new RubricRepository();
         $query = 'SELECT ' .
             'a.`id`, ' .
@@ -73,7 +73,7 @@ class ArticleRepository extends AbstractRepository
         if ($withChildren && $rubricRepository->hasChildRubric($rubricId)) {
             $children = $rubricRepository->getChildRubrics($rubricId);
             foreach ($children as $childRubric) {
-                $res = array_merge($res, $this->getArticlesByRubricId($childRubric->getId()));
+               $this->getArticlesByRubricId($childRubric->getId());
             }
         }
         return $res;

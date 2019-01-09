@@ -38,7 +38,6 @@ class AjaxController extends AbstractController
     public function articleAddAjaxAction(): void
     {
         $html = '';
-        $data = [];
         try {
             if ($this->request->isNotEmpty('post') && empty($this->errors)) {
                 $authorRepository = new AuthorRepository();
