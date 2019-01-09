@@ -27,7 +27,7 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         if ($(this).validate().checkForm()) {
             $.ajax({
-                url: '/article/add',
+                url: baseUrl + '/article/add',
                 type: 'POST',
                 dataType: 'json',
                 data: $(this).serialize(),
@@ -64,7 +64,7 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         var rubricId = $(this).data('rubric_id');
         $.ajax({
-            url: '/rubric/'+rubricId,
+            url: baseUrl + '/rubric/' + rubricId,
             type: 'POST',
             dataType: 'json',
             success: function (data) {
@@ -75,7 +75,7 @@ jQuery(document).ready(function ($) {
                     });
                     quicklyShow($('#form-errors'));
                 } else {
-                    $('#articlesList_rubricTitle').text(': '+data.rubricTitle);
+                    $('#articlesList_rubricTitle').text(': ' + data.rubricTitle);
                     $('#articlesContainer').html('');
                     if (data.html.length > 0) {
                         $('#articlesContainer').replaceWith(data.html);

@@ -14,6 +14,8 @@ class Router
     private $routes = [];
     private $params = [];
     private $requestUri;
+    private $config;
+
 
     public function addRoutes(array $routes): void
     {
@@ -22,14 +24,16 @@ class Router
 
     private function splitUrl($url): array
     {
-        return preg_split('/\//', $url, -1, PREG_SPLIT_NO_EMPTY);
+        return str_ireplace($this->config['baseUrl'], '', preg_split('/\//', $url, -1, PREG_SPLIT_NO_EMPTY));
+
     }
 
     public function dispatch($requestUri = null)
     {
+        $this->config = Application::getInstance()->getConfig();
 
         if ($requestUri === null) {
-            $uriArray = explode('?', $_SERVER['REQUEST_URI']);
+            $uriArray = explode('?', str_ireplace($this->config['baseUrl'], '', 'http://'. $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']));
             $uri = reset($uriArray);
             $requestUri = urldecode(rtrim($uri, '/'));
         }

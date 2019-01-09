@@ -81,9 +81,9 @@ class AjaxController extends AbstractController
                     throw new \Exception('Article saving failed!');
                 }
 
-                $articleData = $articleRepository->getArticleById($articleRepository->getLastInsertId(true));
+                $this->data['article'] = $articleRepository->getArticleById($articleRepository->getLastInsertId(true));
                 $this->view->addPart('articles-list_one');
-                $html = $this->view->render(['article' => $articleData], true);
+                $html = $this->view->render($this->data, true);
             }
         } catch (\Exception $e) {
             $this->errors[] = $e->getMessage();
@@ -105,9 +105,9 @@ class AjaxController extends AbstractController
                 if ($rubricRepository->isRubricExists($rubricId)) {
                     $mainRubric = $rubricRepository->getRubricById($rubricId);
                     $rubricTitle = $mainRubric->getTitle();
-                    $articles = $articleRepository->getArticlesByRubricId($rubricId);
+                    $this->data['articles'] = $articleRepository->getArticlesByRubricId($rubricId);
                     $this->view->addPart('articles-list');
-                    $html = $this->view->render(['articles' => $articles], true);
+                    $html = $this->view->render($this->data, true);
                 } else {
                     throw new \Exception('Rubric #' . $rubricId . ' is not exists!');
                 }
