@@ -6,6 +6,11 @@
         <?php foreach ($articles as $article) {
             include 'articles-list_one.view.php';
         } ?>
+        <?php if (isset($articles['children']) && !empty($articles['children'])) {
+            foreach ($articles['children'] as $article) {
+                include 'articles-list_one.view.php';
+            }
+        } ?>
     <?php } else { ?>
         <div class="container">Ничего не найдено!</div>
     <?php } ?>

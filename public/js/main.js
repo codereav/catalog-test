@@ -44,7 +44,8 @@ jQuery(document).ready(function ($) {
                         $('#form-success').html('');
                         $('#form-success').append('<div class="success">Статья успешно добавлена!</div>');
                         quicklyShow($('#form-success'));
-                        if (data.html.length > 0) {
+                        if (data.html.length > 0 && data.rubric_id !== undefined && data.rubric_id === $('#rubricsLinks a.selected').data('rubric_id') ||
+                            $('#rubricsLinks a.selected').length === 0) {
                             $('#articlesContainer').prepend(data.html);
                             $('html, body').animate({
                                 scrollTop: $("#articlesListHeader").offset().top
@@ -62,6 +63,8 @@ jQuery(document).ready(function ($) {
 
     $('#rubricsLinks a').click(function (e) {
         e.preventDefault();
+        $('#rubricsLinks a').removeClass('selected');
+        $(this).addClass('selected');
         var rubricId = $(this).data('rubric_id');
         $.ajax({
             url: baseUrl + '/rubric/' + rubricId,

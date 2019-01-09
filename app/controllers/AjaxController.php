@@ -38,6 +38,7 @@ class AjaxController extends AbstractController
     public function articleAddAjaxAction(): void
     {
         $html = '';
+        $data = [];
         try {
             if ($this->request->isNotEmpty('post') && empty($this->errors)) {
                 $authorRepository = new AuthorRepository();
@@ -82,6 +83,7 @@ class AjaxController extends AbstractController
                 }
 
                 $this->data['article'] = $articleRepository->getArticleById($articleRepository->getLastInsertId(true));
+
                 $this->view->addPart('articles-list_one');
                 $html = $this->view->render($this->data, true);
             }
@@ -90,7 +92,8 @@ class AjaxController extends AbstractController
         }
         echo json_encode([
             'errors' => $this->errors,
-            'html' => $html
+            'html' => $html,
+            'rubric_id' => $rubricId ?? ''
         ]);
     }
 
