@@ -47,7 +47,7 @@ class ArticleRepository extends AbstractRepository
         return $res;
     }
 
-    public function getArticlesByRubricId(int $rubricId): array
+    public function getArticlesByRubricId(int $rubricId, bool $withChildren = true): array
     {
         $res = [];
         $rubricRepository = new RubricRepository();
@@ -66,12 +66,14 @@ class ArticleRepository extends AbstractRepository
         $result->execute([':rubric_id' => $rubricId]);
         if ($rows = $result->fetchAll()) {
             foreach ($rows as $rawData) {
-                $rawData['children'] = [];
-                //while ($rubricRepository->hasChildRubric($rawData['id'])) {
-                 //   $rawData['children'] = $this->getArticlesByRubricId($rawData['id']);
-               // }
                 $rawData['content'] = mb_strimwidth($rawData['content'], 0, 200) . '...';
                 $res[] = $this->buildData($rawData, new ArticleModel());
+            }
+        }
+        if ($withChildren && $rubricRepository->hasChildRubric($rubricId)) {
+            $children = $rubricRepository->getChildRubrics($rubricId);
+            foreach ($children as $childRubric) {
+                $res = array_merge($res, $this->getArticlesByRubricId($childRubric->getId()));
             }
         }
         return $res;
@@ -122,13 +124,13 @@ class ArticleRepository extends AbstractRepository
                 ':author_id' => $model->getAuthorId()
             ])) {
                 $this->lastInsertId = $this->db->lastInsertId();
-               $query = 'INSERT INTO `article_rubric` (`article_id`,`rubric_id`) ' .
-               'VALUES(:article_id, :rubric_id)';
-               $result = $this->db->prepare($query);
-               return $result->execute([
-                   ':article_id' => $this->getLastInsertId(),
-                   ':rubric_id' => $model->getRubricId()
-               ]);
+                $query = 'INSERT INTO `article_rubric` (`article_id`,`rubric_id`) ' .
+                    'VALUES(:article_id, :rubric_id)';
+                $result = $this->db->prepare($query);
+                return $result->execute([
+                    ':article_id' => $this->getLastInsertId(),
+                    ':rubric_id' => $model->getRubricId()
+                ]);
             }
         }
         return false;

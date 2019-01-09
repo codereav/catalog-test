@@ -104,6 +104,24 @@ class RubricRepository extends AbstractRepository
         return false;
     }
 
+    public function getChildRubrics(int $parentId): array
+    {
+        $res = [];
+        $query = 'SELECT ' .
+            'a.`id`, ' .
+            ' a.`title` ' .
+            'FROM `rubric` a ' .
+            'WHERE a.`parent_id`=:parent_id';
+        $result = $this->db->prepare($query);
+        $result->execute([':parent_id' => $parentId]);
+        if ($rows = $result->fetchAll()) {
+            foreach ($rows as $rawData) {
+                $res[] = $this->buildData($rawData, new RubricModel());
+            }
+        }
+        return $res;
+    }
+
     public function isRubricExists(int $id): ?RubricModel
     {
         $query = 'SELECT 1 FROM `rubric` a WHERE a.`id`=:id';
